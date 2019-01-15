@@ -1,0 +1,12 @@
+<ng-container *ngFor="let item of data">
+  <div class="card">
+    <ng-container *ngFor="let field of viewTemplate.columndFields">
+      <ng-container *ngIf="field.isVisble">
+        <p *ngIf="field.type === 'string'">
+          {{ field.columnDisplayName }}: {{ item[field.columnName] }}
+        </p>
+        <img *ngIf="field.type === 'image'" src="{{ item[field.columnName] }}" />
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-container>

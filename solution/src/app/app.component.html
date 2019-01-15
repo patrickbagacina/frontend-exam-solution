@@ -1,0 +1,11 @@
+<div *ngIf="menu">
+  <ul>
+    <li *ngFor="let item of menu.menu">
+      <a [routerLink]="[item.name]">{{ item.displayName }}</a>
+    </li>
+  </ul>
+
+  <div [innerHTML]="menu.content"></div>
+</div>
+
+<router-outlet></router-outlet>

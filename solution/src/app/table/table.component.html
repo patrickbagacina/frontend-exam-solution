@@ -1,0 +1,20 @@
+<table *ngIf="viewTemplate">
+  <thead>
+    <tr>
+      <ng-container *ngFor="let field of viewTemplate.columndFields">
+        <td *ngIf="field.isVisble">
+          <b>{{ field.columnDisplayName }}</b>
+        </td>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of data">
+      <tr>
+        <ng-container *ngFor="let field of viewTemplate.columndFields">
+          <td width="15%" *ngIf="field.isVisble">{{ item[field.columnName] }}</td>
+        </ng-container>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
