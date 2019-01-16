@@ -2,9 +2,9 @@ import { CardComponent } from './../card/card.component';
 import { ViewComponent } from './../view-component';
 import { DisplayDataDirective } from './../display-data.directive';
 import { ViewTemplateService } from './../services/view-template.service';
-import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { ViewDataService } from '../services/view-data.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TableComponent } from '../table/table.component';
 
@@ -13,9 +13,10 @@ import { TableComponent } from '../table/table.component';
   templateUrl: './generic.component.html',
   styleUrls: ['./generic.component.scss']
 })
-export class GenericComponent implements OnInit {
+export class GenericComponent implements OnInit, OnDestroy {
   public viewTemplate: any;
   public data: any;
+  subcription: Subscription;
   @ViewChild(DisplayDataDirective) appDisplayData: DisplayDataDirective;
 
   constructor(
@@ -26,7 +27,7 @@ export class GenericComponent implements OnInit {
 
   ngOnInit() {
     // get path from params
-    this.route.data.subscribe(v => {
+    this.subcription = this.route.data.subscribe(v => {
       // get template and data from json at the same time
       forkJoin(
         this.templateService.getViewTemplate(v.path),
@@ -68,5 +69,10 @@ export class GenericComponent implements OnInit {
       case 'card': return CardComponent;
       default: return TableComponent;
     }
+  }
+
+  // prevent memory leak
+  ngOnDestroy() {
+    this.subcription.unsubscribe();
   }
 }
