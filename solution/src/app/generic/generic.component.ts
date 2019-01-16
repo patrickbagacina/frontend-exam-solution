@@ -25,9 +25,9 @@ export class GenericComponent implements OnInit {
     private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    // get path
+    // get path from params
     this.route.data.subscribe(v => {
-      // get template and data
+      // get template and data from json at the same time
       forkJoin(
         this.templateService.getViewTemplate(v.path),
         this.viewDataService.getViewData(v.path)
@@ -42,6 +42,7 @@ export class GenericComponent implements OnInit {
     });
   }
 
+  // render components dynamically
   loadDisplay() {
     if (this.viewTemplate) {
       // create instance of component
@@ -55,11 +56,13 @@ export class GenericComponent implements OnInit {
       // add new instance to ViewContainerRef
       const componentInstance = <ViewComponent> viewContainerRef.createComponent(newComponent).instance;
 
+      // pass template and data to component instance
       componentInstance.viewTemplate = this.viewTemplate;
       componentInstance.data = this.data;
     }
   }
 
+  // get equivalent component from type string
   resolveComponent(type: string) {
     switch (type) {
       case 'card': return CardComponent;

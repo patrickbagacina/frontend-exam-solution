@@ -13,10 +13,11 @@ export class AppComponent implements OnInit {
   title = 'solution';
 
   constructor(templateService: ViewTemplateService, router: Router) {
-    // dynamically add to routes
+    // get mainview template
     templateService.getViewTemplate('mainview').subscribe((data: MainView) => {
       this.menu = data;
       if (data && data.menu) {
+        // dynamically add path to routes
         router.config = data.menu.map(m => {
           return {
             component: GenericComponent,
